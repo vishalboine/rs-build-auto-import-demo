@@ -1,0 +1,23 @@
+{
+  "name": "rs-build-auto-import-demo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "element-ui": "^2.15.14",
+    "vue": "^2.7.16"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/preset-env": "^7.26.7",
+    "@rsbuild/core": "^1.1.8",
+    "@rsbuild/plugin-babel": "^1.0.3",
+    "@rsbuild/plugin-vue2": "^1.0.2",
+    "babel-plugin-component": "^1.1.1",
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
