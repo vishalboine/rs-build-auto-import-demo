@@ -1,19 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Rsbuild Plugin to auto-import Element UI icons CSS
- */
 function autoImportElementUICSSPlugin() {
   return {
-    name: 'auto-import-element-ui-css-plugin',
+    name: 'auto-import-element-ui-icons-plugin',
     setup(api) {
       api.onBeforeCreateCompiler(async () => {
         const srcDir = path.resolve(__dirname, 'src');
-        const entryFile = path.resolve(srcDir, 'index.js'); // Adjust if your entry file is different
-        const importStatement = "import 'element-ui/lib/theme-chalk/icon.css';\n";
+        const entryFile = path.resolve(srcDir, 'index.js');
+        const iconCSSImport = "import 'element-ui/lib/theme-chalk/icon.css';\n";
 
-        // Function to recursively scan directories
+        let entryContent = fs.readFileSync(entryFile, 'utf-8');
+        let iconClassFound = false;
+
+        // Function to recursively scan directories for `el-icon-*` classes
         const scanDir = (dir) => {
           const files = fs.readdirSync(dir);
           for (const file of files) {
@@ -23,19 +23,21 @@ function autoImportElementUICSSPlugin() {
               scanDir(filePath);
             } else if (/\.(vue|js|ts|jsx|tsx)$/.test(file)) {
               const content = fs.readFileSync(filePath, 'utf-8');
-              if (content.includes('el-icon-arrow-down')) {
-                // Inject the CSS import if not already present
-                const entryContent = fs.readFileSync(entryFile, 'utf-8');
-                if (!entryContent.includes(importStatement)) {
-                  fs.writeFileSync(entryFile, importStatement + entryContent);
-                }
-                return; // Exit once the import is added
+
+              // Check if any `el-icon-*` class exists in the file
+              if (/\bel-icon-[\w-]+\b/.test(content)) {
+                iconClassFound = true;
               }
             }
           }
         };
 
         scanDir(srcDir);
+
+        // If an `el-icon-*` class was found and CSS is not already imported, inject the import
+        if (iconClassFound && !entryContent.includes(iconCSSImport)) {
+          fs.writeFileSync(entryFile, iconCSSImport + entryContent);
+        }
       });
     },
   };
