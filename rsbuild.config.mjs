@@ -1,6 +1,7 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginVue2 } from '@rsbuild/plugin-vue2';
 import { pluginBabel } from '@rsbuild/plugin-babel';
+const autoImportElementUICSSPlugin = require('./autoImportPlugin');
 
 export default defineConfig({
   plugins: [pluginVue2(),
@@ -30,7 +31,8 @@ export default defineConfig({
 
       return config;
     }
-  })
+  }),
+  autoImportElementUICSSPlugin()
 ],
 
 source:{
@@ -38,7 +40,6 @@ source:{
         transformImport: [
           {
             libraryName: "element-ui",
-            style: true,
             customStyleName : `element-ui/lib/theme-chalk/{{ kebabCase member }}.css`
           }
         ]
