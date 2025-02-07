@@ -33,15 +33,15 @@ export default defineConfig({
     }
   }),
   autoImportElementUICSSPlugin()
-],
+  ],
 
-source:{
-  include: [/node_modules/],
-        transformImport: [
-          {
-            libraryName: "element-ui",
-            customStyleName : `element-ui/lib/theme-chalk/{{ kebabCase member }}.css`
-          }
-        ]
-}
+  source: {
+    include: [/node_modules/],
+    transformImport: [
+      {
+        libraryName: "element-ui",
+        customStyleName: `element-ui/lib/theme-chalk/{{ kebabCase member }}.css`
+      }
+    ]
+  }
 });
